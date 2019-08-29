@@ -73,7 +73,8 @@
             ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
         }
 
-        function gameOver(){
+        function restart(){
+            document.location.reload();
 
         }
         function draw() {
@@ -103,10 +104,9 @@
                     if (!lives) {
                         //here~here~
                         alert("GAME OVER");
-                        var name = prompt("Please enter your name " , "name");
-                        //document.location.reload();
+                        var name = prompt("Please enter your name ", "name");
                         clearInterval(interval); // Needed for Chrome to end game
-
+                        restart();
                     }
                     else {
                         x = canvas.width / 2;
@@ -126,6 +126,7 @@
         draw();
 
     </script>
+        <button onclick="restart()">RESTART</button>
 </body>
 
 </html>
