@@ -40,7 +40,6 @@
         var time = 0;
         var audio = new Audio('bounce.wav');
 
-
         document.addEventListener("mousemove", mouseMoveHandler, false);
         function mouseMoveHandler(e) {
             var relativeX = e.clientX - canvas.offsetLeft;
@@ -89,6 +88,11 @@
             ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
         }
 
+        //reload webpage
+        function restart(){
+            document.location.reload();
+        }
+
         function run() {
             flag = true;
         }
@@ -102,16 +106,19 @@
             drawTime();
 
             if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+                mySound.play();
                 dx = -dx;
                 audio.play();
             }
 
             if (y + dy < ballRadius) {
+                mySound.play();
                 dy = -dy;
                 audio.play();
             }
             else if (y + dy > canvas.height - ballRadius) {
                 if (x > paddleX && x < paddleX + paddleWidth) {
+                    mySound.play();
                     dy = -dy;
                     audio.play();
                     score++;
@@ -119,9 +126,11 @@
                 else {
                     lives--;
                     if (!lives) {
+                        //here~here~
                         alert("GAME OVER");
-                        document.location.reload();
+                        var name = prompt("Please enter your name ", "name");
                         clearInterval(interval); // Needed for Chrome to end game
+                        restart();
                     }
                     else {
                         x = canvas.width / 2;
@@ -135,6 +144,7 @@
             x += dx;
             y += dy;
         }
+      
         // Main function, with interval of 20 miliseconds
         // Runs when user clicks on it
         function run() {
@@ -147,7 +157,12 @@
                 time++;
             }, 1000);
 
+
     </script>
+    <!--button for restart-->
+        <button onclick="restart();">RESTART</button>
+
+
 </body>
 
 </html>
