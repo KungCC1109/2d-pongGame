@@ -2,15 +2,15 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <audio src="bounce.wav" id="sound"></audio>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
 </head>
 
 <body>
     <canvas id="myCanvas" width="480" height="320"></canvas>
+
     <script>
         var canvas = document.getElementById("myCanvas");
         var ctx = canvas.getContext("2d");
@@ -25,9 +25,7 @@
         var score = 0;
         var lives = 3;
         var time = 0;
-        var mySound = document.getElementById("sound");
-        var soundFlag = true;
-
+        var audio = new Audio('bounce.wav');
 
         document.addEventListener("mousemove", mouseMoveHandler, false);
         function mouseMoveHandler(e) {
@@ -36,7 +34,6 @@
                 paddleX = relativeX - paddleWidth / 2;
             }
         }
-
 
         function drawBall() {
             ctx.beginPath();
@@ -48,7 +45,12 @@
 
         function drawPaddle() {
             ctx.beginPath();
-            ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+            ctx.rect(
+                paddleX,
+                canvas.height - paddleHeight,
+                paddleWidth,
+                paddleHeight
+            );
             ctx.fillStyle = "#0095DD";
             ctx.fill();
             ctx.closePath();
@@ -63,7 +65,7 @@
         function drawTime() {
             ctx.font = "16px Arial";
             ctx.fillStyle = "#0095DD";
-            ctx.fillText("Time: " + time, 100, 20)
+            ctx.fillText("Time: " + time, 100, 20);
             time++;
         }
 
@@ -72,7 +74,6 @@
             ctx.fillStyle = "#0095DD";
             ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
         }
-
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -83,27 +84,24 @@
             drawTime();
 
             if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-                mySound.play();
+                audio.play();
                 dx = -dx;
             }
             if (y + dy < ballRadius) {
-                mySound.play();
+                audio.play();
                 dy = -dy;
-            }
-            else if (y + dy > canvas.height - ballRadius) {
+            } else if (y + dy > canvas.height - ballRadius) {
                 if (x > paddleX && x < paddleX + paddleWidth) {
-                    mySound.play();
+                    audio.play();
                     dy = -dy;
                     score++;
-                }
-                else {
+                } else {
                     lives--;
                     if (!lives) {
                         alert("GAME OVER");
                         document.location.reload();
                         clearInterval(interval); // Needed for Chrome to end game
-                    }
-                    else {
+                    } else {
                         x = canvas.width / 2;
                         y = canvas.height - 30;
                         dx = 5;
@@ -115,10 +113,9 @@
 
             x += dx;
             y += dy;
-            requestAnimationFrame(draw);
-        }
 
-        draw();
+        }
+        setInterval(draw, 20);
 
     </script>
 </body>
