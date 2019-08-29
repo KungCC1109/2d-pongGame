@@ -8,7 +8,7 @@
     <title>Document</title>
 
     <style>
-            * {
+        * {
             padding: 0;
             margin: 0;
         }
@@ -22,7 +22,7 @@
 </head>
 
 <body>
-    <canvas id="myCanvas" width="480" height="320"></canvas>
+    <canvas id="myCanvas" width="480" height="320" onclick="run();"></canvas>
 
     <script>
         var canvas = document.getElementById("myCanvas");
@@ -75,7 +75,7 @@
             ctx.fillStyle = "#0095DD";
             ctx.fillText("Time: " + time, 100, 20);
         }
-      
+
         function drawScore() {
             ctx.font = "16px Arial";
             ctx.fillStyle = "#0095DD";
@@ -89,47 +89,57 @@
             ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
         }
 
-        // Main function, with interval of 15 miliseconds
-        var interval = setInterval(
-            function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                drawBall();
-                drawPaddle();
-                drawScore();
-                drawLives();
-                drawTime();
+        function run() {
+            flag = true;
+        }
 
-                if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-                    dx = -dx;
-                }
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBall();
+            drawPaddle();
+            drawScore();
+            drawLives();
+            drawTime();
 
-                if (y + dy < ballRadius) {
+            if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+                dx = -dx;
+                audio.play();
+            }
+
+            if (y + dy < ballRadius) {
+                dy = -dy;
+                audio.play();
+            }
+            else if (y + dy > canvas.height - ballRadius) {
+                if (x > paddleX && x < paddleX + paddleWidth) {
                     dy = -dy;
+                    audio.play();
+                    score++;
                 }
-                else if (y + dy > canvas.height - ballRadius) {
-                    if (x > paddleX && x < paddleX + paddleWidth) {
-                        dy = -dy;
-                        score++;
+                else {
+                    lives--;
+                    if (!lives) {
+                        alert("GAME OVER");
+                        document.location.reload();
+                        clearInterval(interval); // Needed for Chrome to end game
                     }
                     else {
-                        lives--;
-                        if (!lives) {
-                            alert("GAME OVER");
-                            document.location.reload();
-                            clearInterval(interval); // Needed for Chrome to end game
-                        }
-                        else {
-                            x = canvas.width / 2;
-                            y = canvas.height - 30;
-                            dx = 5;
-                            dy = -5;
-                            paddleX = (canvas.width - paddleWidth) / 2;
-                        }
+                        x = canvas.width / 2;
+                        y = canvas.height - 30;
+                        dx = 5;
+                        dy = -5;
+                        paddleX = (canvas.width - paddleWidth) / 2;
                     }
                 }
-                x += dx;
-                y += dy;
-            }, 20);
+            }
+            x += dx;
+            y += dy;
+        }
+        // Main function, with interval of 20 miliseconds
+        // Runs when user clicks on it
+        function run() {
+            var interval = setInterval(draw, 20);
+        }
 
         // Timer +1 seconds
         var timer = setInterval(
