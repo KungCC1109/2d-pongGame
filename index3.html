@@ -73,10 +73,11 @@
             ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
         }
 
+        //reload webpage
         function restart(){
             document.location.reload();
-
         }
+
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawBall();
@@ -126,6 +127,7 @@
         draw();
 
     </script>
+    <!--button for restart-->
         <button onclick="restart()">RESTART</button>
 </body>
 
