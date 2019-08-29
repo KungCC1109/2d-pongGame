@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <audio src="bounce.wav" id="sound"></audio>
     <title>Document</title>
 </head>
 
@@ -24,6 +25,8 @@
         var score = 0;
         var lives = 3;
         var time = 0;
+        var mySound = document.getElementById("sound");
+        var soundFlag = true;
 
 
         document.addEventListener("mousemove", mouseMoveHandler, false);
@@ -57,7 +60,7 @@
             ctx.fillText("Score: " + score, 8, 20);
         }
 
-        function drawTime(){
+        function drawTime() {
             ctx.font = "16px Arial";
             ctx.fillStyle = "#0095DD";
             ctx.fillText("Time: " + time, 100, 20)
@@ -69,6 +72,10 @@
             ctx.fillStyle = "#0095DD";
             ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
         }
+
+        function gameOver(){
+
+        }
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawBall();
@@ -78,22 +85,28 @@
             drawTime();
 
             if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+                mySound.play();
                 dx = -dx;
             }
             if (y + dy < ballRadius) {
+                mySound.play();
                 dy = -dy;
             }
             else if (y + dy > canvas.height - ballRadius) {
                 if (x > paddleX && x < paddleX + paddleWidth) {
+                    mySound.play();
                     dy = -dy;
                     score++;
                 }
                 else {
                     lives--;
                     if (!lives) {
+                        //here~here~
                         alert("GAME OVER");
-                        document.location.reload();
+                        var name = prompt("Please enter your name " , "name");
+                        //document.location.reload();
                         clearInterval(interval); // Needed for Chrome to end game
+
                     }
                     else {
                         x = canvas.width / 2;
@@ -111,8 +124,8 @@
         }
 
         draw();
-        
-        </script>
+
+    </script>
 </body>
 
 </html>
