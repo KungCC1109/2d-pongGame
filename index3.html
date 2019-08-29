@@ -2,15 +2,28 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <audio src="bounce.wav" id="sound"></audio>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        canvas {
+            background: #eee;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 
 <body>
-    <canvas id="myCanvas" width="480" height="320"></canvas>
+    <canvas id="myCanvas" width="480" height="320" onclick="run();"></canvas>
+
     <script>
         var canvas = document.getElementById("myCanvas");
         var ctx = canvas.getContext("2d");
@@ -25,9 +38,7 @@
         var score = 0;
         var lives = 3;
         var time = 0;
-        var mySound = document.getElementById("sound");
-        var soundFlag = true;
-
+        var audio = new Audio('bounce.wav');
 
         document.addEventListener("mousemove", mouseMoveHandler, false);
         function mouseMoveHandler(e) {
@@ -36,7 +47,6 @@
                 paddleX = relativeX - paddleWidth / 2;
             }
         }
-
 
         function drawBall() {
             ctx.beginPath();
@@ -48,23 +58,28 @@
 
         function drawPaddle() {
             ctx.beginPath();
-            ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+            ctx.rect(
+                paddleX,
+                canvas.height - paddleHeight,
+                paddleWidth,
+                paddleHeight
+            );
             ctx.fillStyle = "#0095DD";
             ctx.fill();
             ctx.closePath();
+        }
+
+        function drawTime() {
+            ctx.font = "16px Arial";
+            ctx.fillStyle = "#0095DD";
+            ctx.fillText("Time: " + time, 100, 20);
         }
 
         function drawScore() {
             ctx.font = "16px Arial";
             ctx.fillStyle = "#0095DD";
             ctx.fillText("Score: " + score, 8, 20);
-        }
 
-        function drawTime() {
-            ctx.font = "16px Arial";
-            ctx.fillStyle = "#0095DD";
-            ctx.fillText("Time: " + time, 100, 20)
-            time++;
         }
 
         function drawLives() {
@@ -78,6 +93,10 @@
             document.location.reload();
         }
 
+        function run() {
+            flag = true;
+        }
+
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawBall();
@@ -89,15 +108,19 @@
             if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
                 mySound.play();
                 dx = -dx;
+                audio.play();
             }
+
             if (y + dy < ballRadius) {
                 mySound.play();
                 dy = -dy;
+                audio.play();
             }
             else if (y + dy > canvas.height - ballRadius) {
                 if (x > paddleX && x < paddleX + paddleWidth) {
                     mySound.play();
                     dy = -dy;
+                    audio.play();
                     score++;
                 }
                 else {
@@ -118,17 +141,28 @@
                     }
                 }
             }
-
             x += dx;
             y += dy;
-            requestAnimationFrame(draw);
+        }
+      
+        // Main function, with interval of 20 miliseconds
+        // Runs when user clicks on it
+        function run() {
+            var interval = setInterval(draw, 20);
         }
 
-        draw();
+        // Timer +1 seconds
+        var timer = setInterval(
+            function () {
+                time++;
+            }, 1000);
+
 
     </script>
     <!--button for restart-->
-        <button onclick="restart()">RESTART</button>
+        <button onclick="restart();">RESTART</button>
+
+
 </body>
 
 </html>
