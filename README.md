@@ -1,6 +1,6 @@
 ## Pong Game
 
-> This source code is used as part of the PolySkills training  
+> This source code is used as part of the PolySkills 2019 training  
 
 
 **Contributors:**
