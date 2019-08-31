@@ -58,11 +58,10 @@ function drawLives() {
   ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
 }
 
-// reload webpage (NOT FUNCTIONAL)
-// function restart() {
-//   document.location.reload();
-//   clearInterval(interval); // Needed for Chrome to end game
-// }
+function restart() {
+  document.location.reload();
+  clearInterval(interval); // Needed for Chrome to end game
+}
 
 function run() {
   flag = true;
@@ -90,7 +89,6 @@ function collisionDetection() {
         var name = prompt("Please enter your name ", "name");
         document.location.reload();
         clearInterval(interval); // Needed for Chrome to end game
-        restart();
       } else {
         x = canvas.width / 2;
         y = canvas.height - 30;
